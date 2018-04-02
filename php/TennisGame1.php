@@ -15,7 +15,7 @@ class TennisGame1 implements TennisGame
 
     public function wonPoint($playerName)
     {
-        if ('player1' == $playerName) {
+        if ($this->player1Name == $playerName) {
             $this->m_score1++;
         } else {
             $this->m_score2++;
@@ -28,8 +28,7 @@ class TennisGame1 implements TennisGame
         if ($this->isTie()) {
             $score = Score::getDescriptionScoreTie($this->m_score1);
         } elseif ($this->theyAreOverThree()) {
-            $minusResult = $this->m_score1 - $this->m_score2;
-            $score = Score::getDescriptionForAdvantageOrEndedGame($minusResult);
+            $score = Score::getDescriptionForAdvantageOrEndedGame($this->getDiffScores());
         } else {
             $score = Score::getDescriptionScore($this->m_score1);
             $score .= "-";
@@ -52,6 +51,14 @@ class TennisGame1 implements TennisGame
     private function theyAreOverThree(): bool
     {
         return $this->m_score1 >= 4 || $this->m_score2 >= 4;
+    }
+
+    /**
+     * @return int
+     */
+    private function getDiffScores(): int
+    {
+        return $this->m_score1 - $this->m_score2;
     }
 
 
