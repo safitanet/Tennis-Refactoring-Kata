@@ -25,7 +25,7 @@ class TennisGame1 implements TennisGame
     public function getScore()
     {
         $score = "";
-        if ($this->m_score1 == $this->m_score2) {
+        if ($this->isTie()) {
             switch ($this->m_score1) {
                 case 0:
                     $score = "Love-All";
@@ -40,7 +40,7 @@ class TennisGame1 implements TennisGame
                     $score = "Deuce";
                     break;
             }
-        } elseif ($this->m_score1 >= 4 || $this->m_score2 >= 4) {
+        } elseif ($this->theyAreOverThree()) {
             $minusResult = $this->m_score1 - $this->m_score2;
             if ($minusResult == 1) {
                 $score = "Advantage player1";
@@ -76,6 +76,22 @@ class TennisGame1 implements TennisGame
             }
         }
         return $score;
+    }
+
+    /**
+     * @return bool
+     */
+    private function isTie(): bool
+    {
+        return $this->m_score1 == $this->m_score2;
+    }
+
+    /**
+     * @return bool
+     */
+    private function theyAreOverThree(): bool
+    {
+        return $this->m_score1 >= 4 || $this->m_score2 >= 4;
     }
 }
 
