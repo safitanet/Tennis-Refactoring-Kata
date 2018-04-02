@@ -26,20 +26,7 @@ class TennisGame1 implements TennisGame
     {
         $score = "";
         if ($this->isTie()) {
-            switch ($this->m_score1) {
-                case 0:
-                    $score = "Love-All";
-                    break;
-                case 1:
-                    $score = "Fifteen-All";
-                    break;
-                case 2:
-                    $score = "Thirty-All";
-                    break;
-                default:
-                    $score = "Deuce";
-                    break;
-            }
+            $score = $this->getDescriptionScoreTie();
         } elseif ($this->theyAreOverThree()) {
             $minusResult = $this->m_score1 - $this->m_score2;
             if ($minusResult == 1) {
@@ -93,6 +80,28 @@ class TennisGame1 implements TennisGame
                 break;
             case 3:
                 $score = "Forty";
+                break;
+        }
+        return $score;
+    }
+
+    /**
+     * @return string
+     */
+    private function getDescriptionScoreTie(): string
+    {
+        switch ($this->m_score1) {
+            case 0:
+                $score = "Love-All";
+                break;
+            case 1:
+                $score = "Fifteen-All";
+                break;
+            case 2:
+                $score = "Thirty-All";
+                break;
+            default:
+                $score = "Deuce";
                 break;
         }
         return $score;
