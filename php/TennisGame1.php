@@ -29,15 +29,7 @@ class TennisGame1 implements TennisGame
             $score = Score::getDescriptionScoreTie($this->m_score1);
         } elseif ($this->theyAreOverThree()) {
             $minusResult = $this->m_score1 - $this->m_score2;
-            if ($minusResult == 1) {
-                $score = "Advantage player1";
-            } elseif ($minusResult == -1) {
-                $score = "Advantage player2";
-            } elseif ($minusResult >= 2) {
-                $score = "Win for player1";
-            } else {
-                $score = "Win for player2";
-            }
+            $score = Score::getDescriptionForAdvantageOrEndedGame($minusResult);
         } else {
             $score = Score::getDescriptionScore($this->m_score1);
             $score .= "-";
@@ -61,6 +53,8 @@ class TennisGame1 implements TennisGame
     {
         return $this->m_score1 >= 4 || $this->m_score2 >= 4;
     }
+
+
 }
 
 class Score {
@@ -86,6 +80,25 @@ class Score {
     {
         $score = $score > 2 ? 3 : $score;
         return Score::TIE_SCORE[$score];
+    }
+
+    /**
+     * @param $minusResult
+     *
+     * @return string
+     */
+    public static function getDescriptionForAdvantageOrEndedGame($minusResult): string
+    {
+        if ($minusResult == 1) {
+            $score = "Advantage player1";
+        } elseif ($minusResult == -1) {
+            $score = "Advantage player2";
+        } elseif ($minusResult >= 2) {
+            $score = "Win for player1";
+        } else {
+            $score = "Win for player2";
+        }
+        return $score;
     }
 }
 
