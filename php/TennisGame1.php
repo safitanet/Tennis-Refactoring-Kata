@@ -26,7 +26,7 @@ class TennisGame1 implements TennisGame
     {
         $score = "";
         if ($this->isTie()) {
-            $score = $this->getDescriptionScoreTie();
+            $score = Score::getDescriptionScoreTie($this->m_score1);
         } elseif ($this->theyAreOverThree()) {
             $minusResult = $this->m_score1 - $this->m_score2;
             if ($minusResult == 1) {
@@ -39,9 +39,9 @@ class TennisGame1 implements TennisGame
                 $score = "Win for player2";
             }
         } else {
-            $score = $this->getDescriptionScore($this->m_score1);
+            $score = Score::getDescriptionScore($this->m_score1);
             $score .= "-";
-            $score .= $this->getDescriptionScore($this->m_score2);
+            $score .= Score::getDescriptionScore($this->m_score2);
         }
         return $score;
     }
@@ -61,40 +61,31 @@ class TennisGame1 implements TennisGame
     {
         return $this->m_score1 >= 4 || $this->m_score2 >= 4;
     }
-
-    /**
-     * @param $tempScore
-     * @return string
-     */
-    private function getDescriptionScore($tempScore): string
-    {
-        return Score::BASIC_SCORE[$tempScore];
-    }
-
-    /**
-     * @return string
-     */
-    private function getDescriptionScoreTie(): string
-    {
-        switch ($this->m_score1) {
-            case 0:
-                $score = "Love-All";
-                break;
-            case 1:
-                $score = "Fifteen-All";
-                break;
-            case 2:
-                $score = "Thirty-All";
-                break;
-            default:
-                $score = "Deuce";
-                break;
-        }
-        return $score;
-    }
 }
 
 class Score {
     const BASIC_SCORE = [0 => "Love", 1 => "Fifteen", 2 => "Thirty", 3 => "Forty"];
+    const TIE_SCORE = [0 => "Love-All", 1 => "Fifteen-All", 2 => "Thirty-All", 3 => "Deuce"];
+
+    /**
+     * @param $score
+     *
+     * @return string
+     */
+    public static function getDescriptionScore($score): string
+    {
+        return self::BASIC_SCORE[$score];
+    }
+
+    /**
+     * @param $score
+     *
+     * @return string
+     */
+    public static function getDescriptionScoreTie($score): string
+    {
+        $score = $score > 2 ? 3 : $score;
+        return Score::TIE_SCORE[$score];
+    }
 }
 
