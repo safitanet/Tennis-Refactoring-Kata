@@ -52,28 +52,9 @@ class TennisGame1 implements TennisGame
                 $score = "Win for player2";
             }
         } else {
-            for ($i = 1; $i < 3; $i++) {
-                if ($i == 1) {
-                    $tempScore = $this->m_score1;
-                } else {
-                    $score .= "-";
-                    $tempScore = $this->m_score2;
-                }
-                switch ($tempScore) {
-                    case 0:
-                        $score .= "Love";
-                        break;
-                    case 1:
-                        $score .= "Fifteen";
-                        break;
-                    case 2:
-                        $score .= "Thirty";
-                        break;
-                    case 3:
-                        $score .= "Forty";
-                        break;
-                }
-            }
+            $score = $this->getDescriptionScore($this->m_score1);
+            $score .= "-";
+            $score .= $this->getDescriptionScore($this->m_score2);
         }
         return $score;
     }
@@ -92,6 +73,29 @@ class TennisGame1 implements TennisGame
     private function theyAreOverThree(): bool
     {
         return $this->m_score1 >= 4 || $this->m_score2 >= 4;
+    }
+
+    /**
+     * @param $tempScore
+     * @return string
+     */
+    private function getDescriptionScore($tempScore): string
+    {
+        switch ($tempScore) {
+            case 0:
+                $score = "Love";
+                break;
+            case 1:
+                $score = "Fifteen";
+                break;
+            case 2:
+                $score = "Thirty";
+                break;
+            case 3:
+                $score = "Forty";
+                break;
+        }
+        return $score;
     }
 }
 
